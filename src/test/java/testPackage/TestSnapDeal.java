@@ -122,11 +122,14 @@ public class TestSnapDeal {
 	}
 //Method to Select multiple Brands
 	public static void selectBrand(String filterGroup) throws InterruptedException {
-		Thread.sleep(10000);
+		/*Thread.sleep(5000);*/
 		wait = new WebDriverWait(driver, 25);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.searcharea-overlay")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div.filterLoader.hidden")));
 		List<WebElement> filters = driver.findElements(By.cssSelector("div[data-name='" + filterGroup + "'] label"));
 		// System.out.println(filters.size()); // for debugging
 		for (int i = 0; i < filters.size(); i++) {
+			
 			click(filters.get(i), 3);
 
 			// wait for the two overlays to disappear
@@ -151,7 +154,8 @@ public class TestSnapDeal {
 		By addToCartLocator = By.xpath("//span[text()='add to cart']");
 		WebElement addToCart = findElement(addToCartLocator, 5);
 		click(addToCart, 5);
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span.cartQuantity")));
+		/*Thread.sleep(2000);*/
 		driver.close();
 	}
 //method to capture the screenshot
@@ -224,8 +228,8 @@ public class TestSnapDeal {
 
 		// Refreshing the page so that cart is updated with the items number
 		driver.navigate().refresh();
-		driver.navigate().refresh();
-
+		/*driver.navigate().refresh();*/
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span.cartQuantity")));
 		// Clicking on cart option
 		By cartLocator = By.cssSelector("i.sd-icon.sd-icon-cart-icon-white-2");
 		WebElement cart = findElement(cartLocator, 10);
